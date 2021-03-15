@@ -1,8 +1,5 @@
 module.exports = function toReadable (number) {
-  if (number === 0) {
-    return 'zero';
-  }
-  let num = {
+   let humaneNum = {
     0: '',
     1: 'one',
     2: 'two',
@@ -34,21 +31,22 @@ module.exports = function toReadable (number) {
     100: 'hundred'
 }
 
+if (number === 0) {
+  return 'zero';
+}
+
+function readableNum(number, humaneNum) {
+  if (number < 20) {
+    return humaneNum[number];
+  } else {
+    return (`${humaneNum[Math.floor(number / 10) * 10]} ${humaneNum[number % 10]}`.trimRight());
+  }
+}
 
 if (number > 99) {
-    return `${num[Math.floor(number / 100)]} hundred ${convertNumber(number % 100, num)}`.trimRight();
+  return (`${humaneNum[Math.floor(number / 100)]} hundred ${readableNum(number % 100, humaneNum)}`.trimRight());
 } else {
-    return convertNumber(number, num);
-};
-
-function convertNumber(number, num) {
-    if (number < 10) {
-        return num[number];
-    } else if (number >= 10 && number < 20) {
-        return num[number];
-    } else {
-        return `${num[Math.floor(number / 10) * 10]} ${num[number % 10]}`.trimRight();
-    }
+  return readableNum(number, humaneNum);
 }
 
 }
